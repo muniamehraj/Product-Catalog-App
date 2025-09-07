@@ -28,6 +28,7 @@ class ProductActivity : AppCompatActivity() {
         binding.rvProducts.adapter = adapter
 
         binding.btnRetry.setOnClickListener { loadProducts() }
+        binding.btnRefresh.setOnClickListener { loadProducts() } // floating button
 
         loadProducts()
     }
@@ -35,11 +36,13 @@ class ProductActivity : AppCompatActivity() {
     private fun setLoading(loading: Boolean) {
         binding.progressBar.visibility = if (loading) View.VISIBLE else View.GONE
         binding.btnRetry.visibility = View.GONE
+        binding.btnRefresh.isEnabled = !loading
     }
 
     private fun showRetry() {
         binding.progressBar.visibility = View.GONE
         binding.btnRetry.visibility = View.VISIBLE
+        binding.btnRefresh.isEnabled = true
     }
 
     private fun loadProducts() {
