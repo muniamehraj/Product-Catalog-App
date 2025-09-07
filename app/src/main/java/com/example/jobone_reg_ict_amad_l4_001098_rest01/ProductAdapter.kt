@@ -8,6 +8,8 @@ import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.example.jobone_reg_ict_amad_l4_001098_rest01.models.Product
 
 class ProductAdapter :
@@ -38,8 +40,15 @@ class ProductAdapter :
             tvName.text = p.title
             tvDesc.text = p.description
             tvPrice.text = "$${"%.2f".format(p.price)}"
-            // Placeholder image for now (no Glide per “Retrofit only”)
-            ivThumb.setImageResource(android.R.drawable.ic_menu_gallery)
+
+            // Load each product's own image URL. If missing/bad, show a fallback.
+            Glide.with(ivThumb.context)
+                .load(p.thumbnail) // this is dto.images?.firstOrNull()
+                .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC)
+                .centerCrop()
+                .placeholder(android.R.drawable.ic_menu_gallery)
+                .error(android.R.drawable.ic_menu_report_image)
+                .into(ivThumb)
         }
     }
 }
